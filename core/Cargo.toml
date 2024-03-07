@@ -1,32 +1,17 @@
 [package]
 authors.workspace = true
-categories = []
+categories.workspace = true
 description.workspace = true
 edition.workspace = true
 homepage.workspace = true
-keywords = ["security"]
 license.workspace = true
-name = "arachnid"
-readme.workspace = true
+name = "arachnid-core"
 repository.workspace = true
+readme.workspace = true
 version.workspace = true
 
 [features]
-default = [
-    "core"
-]
-full = [
-    "core",
-    "rat"
-]
-
-core = [
-    "dep:arachnid-core"
-]
-
-rat = [
-    "dep:arachnid-rat"
-]
+default = []
 
 [lib]
 bench = true
@@ -37,8 +22,6 @@ test = true
 [build-dependencies]
 
 [dependencies]
-arachnid-core = { optional = true, path = "../core", version = "0.0.1" }
-arachnid-rat = { optional = true, path = "../rat", version = "0.0.1" }
 
 [dev-dependencies]
 

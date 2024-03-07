@@ -16,6 +16,8 @@ default-members = [
 exclude = [ ]
 members = [
     "arachnid", 
+    "core", 
+    "rat", 
 ]
 resolver = "2"
 

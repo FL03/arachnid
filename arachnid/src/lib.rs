@@ -6,4 +6,14 @@
 //!
 //!
 
-pub mod prelude {}
+#[cfg(feature = "core")]
+pub use arachnid_core as core;
+#[cfg(feature = "rat")]
+pub use arachnid_rat as rat;
+
+pub mod prelude {
+    #[cfg(feature = "core")]
+    pub use core::prelude::*;
+    #[cfg(feature = "rat")]
+    pub use rat::prelude::*;
+}
