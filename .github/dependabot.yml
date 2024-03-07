@@ -12,3 +12,11 @@ updates:
     directory: /arachnid
     schedule:
       interval: daily
+  - package-ecosystem: cargo
+    directory: /core
+    schedule:
+      interval: daily
+  - package-ecosystem: cargo
+    directory: /rat
+    schedule:
+      interval: daily
