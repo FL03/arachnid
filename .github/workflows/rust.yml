@@ -1,0 +1,75 @@
+name: Rust
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ "nightly*",  "v*.*.*" ]
+  release:
+  repository_dispatch:
+    types: [ publish ]
+  schedule:
+    - cron: "30 21 * * 0" # 9:30pm UTC
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    strategy:
+      matrix:
+        platform: [ ubuntu-latest ]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup (langspace)
+        run: |
+          rustup update
+          rustup default nightly
+      - name: Build
+        id: rust-build
+        run: cargo build -F full -r -v --workspace
+      - name: Cache build
+        id: rust-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/release
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+  test:
+    name: Test
+    needs: build
+    strategy:
+      matrix:
+        platform: [ ubuntu-latest ]
+        toolchain: [ nightly ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup (langspace)
+        run: |
+          rustup update
+          rustup default ${{ matrix.toolchain }}
+      - name: Test
+        id: rust-test
+        run: cargo test --all -F full -r -v
+  bench:
+    name: Bench
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup (langspace)
+        run: |
+          rustup update
+          rustup default nightly
+      - name: Bench
+        id: rust-bench
+        run: cargo bench --all -F full -r -v
