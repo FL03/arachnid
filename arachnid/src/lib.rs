@@ -13,7 +13,7 @@ pub use arachnid_rat as rat;
 
 pub mod prelude {
     #[cfg(feature = "core")]
-    pub use core::prelude::*;
+    pub use crate::core::prelude::*;
     #[cfg(feature = "rat")]
-    pub use rat::prelude::*;
+    pub use crate::rat::prelude::*;
 }
